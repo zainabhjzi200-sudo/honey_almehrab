@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عسل المحراب | Al Mehrab Honey</title>
+    <!-- خطوط عربية فاخرة -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- مكتبة الأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0d0d0d;
+            --bg-card: #161616;
+            --bg-card-hover: #1f1f1f;
+            --gold-primary: #d4af37;
+            --gold-light: #f3e5ab;
+            --gold-dark: #aa8c2c;
+            --text-main: #f5f5f5;
+            --text-muted: #a0a0a0;
+            --border-gold: rgba(212, 175, 55, 0.25);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* رسالة الشكر والنجاح الصغيرة (Toast) */
+        #toast-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(22, 22, 22, 0.95);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-light);
+            padding: 14px 28px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            z-index: 999999;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            text-align: center;
+        }
+
+        #toast-notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        #toast-notification i {
+            color: var(--gold-primary);
+            font-size: 1.2rem;
+        }
+
+        /* نافذة الدفع الفوري المنبثقة (تشبه WPAY) */
+        .wpay-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .wpay-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .wpay-modal-content {
+            background: #ffffff;
+            color: #111;
+            border-radius: 20px;
+            max-width: 420px;
+            width: 90%;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            text-align: center;
+            font-family: 'Tajawal', sans-serif;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .wpay-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #e6005c;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .wpay-subtitle {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 12px;
+        }
+
+        .wpay-details-box {
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .wpay-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .wpay-row strong {
+            color: #111;
+        }
+
+        .wpay-total-row {
+            border-top: 1px dashed #ddd;
+            padding-top: 8px;
+            margin-top: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #e6005c;
+        }
+
+        .wpay-number-box {
+            background: #fff0f5;
+            border: 1px dashed #e6005c;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .wpay-number-box span {
+            display: block;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .wpay-number-box strong {
+            font-size: 1.4rem;
+            color: #e6005c;
+            letter-spacing: 2px;
+        }
+
+        /* تنسيق الملاحظة الخاصة بإرسال السكرين شوت والاسم عبر الواتساب */
+        .wpay-whatsapp-note {
+            background: #fdf2f8;
+            border: 1px solid #fbcfe8;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: #831843;
+            text-align: right;
+            line-height: 1.6;
+        }
+
+        .wpay-whatsapp-note strong {
+            color: #be185d;
+        }
+
+        .wpay-confirm-btn {
+            background: #e6005c;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 30px;
+            width: 100%;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .wpay-confirm-btn:hover {
+            background: #cc0052;
+        }
+
+        .wpay-close {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        /* تأثير نقط العسل بالخلفية */
+        .honey-drops-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .drop {
+            position: absolute;
+            background: radial-gradient(circle, rgba(212,175,55,0.4) 0%, rgba(212,175,55,0.05) 70%);
+            border-radius: 50%;
+            animation: fallDrop linear infinite;
+        }
+
+        @keyframes fallDrop {
+            0% { transform: translateY(-50px); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { transform: translateY(105vh); opacity: 0; }
+        }
+
+        /* شاشة التحميل الفخمة مع خلفية فيديو */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            overflow: hidden;
+        }
+
+        .splash-video-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .splash-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 13, 13, 0.6);
+            z-index: 2;
+        }
+
+        .splash-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+        }
+
+        .splash-logo {
+            font-family: 'Amiri', serif;
+            font-size: 2.8rem;
+            color: var(--gold-light);
+            text-align: center;
+            animation: glowPulse 2s infinite alternate;
+        }
+
+        .splash-sub {
+            font-size: 1.1rem;
+            color: var(--gold-primary);
+            margin-top: 10px;
+            letter-spacing: 2px;
+        }
+
+        @keyframes glowPulse {
+            from { text-shadow: 0 0 5px rgba(212, 175, 55, 0.2); }
+            to { text-shadow: 0 0 20px rgba(212, 175, 55, 0.6); }
+        }
+
+        /* الشريط الإعلاني المتحرك الأعلى */
+        .top-announcement-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 36px;
+            background: linear-gradient(90deg, #0d0d0d, #1a1608, #0d0d0d);
+            border-bottom: 1px solid var(--border-gold);
+            z-index: 10001;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .marquee-track {
+            display: flex;
+            white-space: nowrap;
+            animation: marqueeScroll 28s linear infinite;
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        .marquee-item {
+            font-family: 'Amiri', serif;
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--gold-light);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 0 40px;
+            letter-spacing: 1px;
+        }
+
+        .marquee-dot {
+            width: 5px;
+            height: 5px;
+            background-color: var(--gold-primary);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(50%); }
+        }
+
+        /* شريط التنقل العلوي الفخم */
+        header {
+            position: fixed;
+            top: 36px;
+            left: 0;
+            width: 100%;
+            background: rgba(13, 13, 13, 0.65);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border-gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 6%;
+            z-index: 10000;
+            transition: var(--transition);
+        }
+
+        .brand-logo {
+            font-family: 'Amiri', serif;
+            font-size: 1.7rem;
+            color: var(--gold-light);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .brand-logo:hover {
+            color: var(--gold-primary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.05rem;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 4px;
+            transition: var(--transition);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gold-primary);
+            transition: all 0.3s ease;
+            transform: translateX(50%);
+        }
+
+        nav ul li a:hover {
+            color: var(--gold-light);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        /* الواجهة الرئيسية مع خلفية الفيديو الكاملة */
+        .hero-video-bg {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .bg-video-element, .products-bg-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 13, 13, 0.7);
+            z-index: 2;
+        }
+
+        .hero-content-box {
+            position: relative;
+            z-index: 3;
+            max-width: 800px;
+            padding: 0 20px;
+            margin-top: 40px;
+        }
+
+        .hero-content-box h1 {
+            font-family: 'Amiri', serif;
+            font-size: 3.5rem;
+            color: var(--gold-light);
+            margin-bottom: 15px;
+        }
+
+        .hero-content-box p {
+            font-size: 1.25rem;
+            color: var(--gold-primary);
+            max-width: 700px;
+            line-height: 1.8;
+            margin-bottom: 35px;
+            font-weight: 600;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn-main {
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            color: var(--bg-dark);
+            padding: 14px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .btn-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-sec {
+            background: transparent;
+            border: 1px solid var(--border-gold);
+            color: var(--text-main);
+            padding: 14px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .btn-sec:hover {
+            border-color: var(--gold-primary);
+            color: var(--gold-light);
+        }
+
+        /* قسم أصناف العسل بخلفية فيديو كاملة */
+        .products-video-bg {
+            position: relative;
+            padding: 120px 6%;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .products-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 13, 13, 0.85);
+            z-index: 2;
+        }
+
+        .products-content-wrapper {
+            position: relative;
+            z-index: 3;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-header h2 {
+            font-family: 'Amiri', serif;
+            font-size: 2.5rem;
+            color: var(--gold-light);
+            margin-bottom: 10px;
+        }
+
+        .pricing-mode-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .mode-tab {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            color: var(--text-muted);
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .mode-tab.active {
+            background: var(--gold-primary);
+            color: var(--bg-dark);
+            border-color: var(--gold-primary);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition);
+        }
+
+        .product-card:hover {
+            border-color: var(--gold-primary);
+            transform: translateY(-7px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.25);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-gold);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .product-img:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .product-card-body {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .product-card h3 {
+            font-family: 'Amiri', serif;
+            font-size: 1.8rem;
+            color: var(--gold-light);
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .product-card h3:hover {
+            color: var(--gold-primary);
+        }
+
+        .product-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .price-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-card-hover);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(212,175,55,0.15);
+        }
+
+        .current-price {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--gold-primary);
+        }
+
+        .old-price {
+            font-size: 1rem;
+            color: #777;
+            text-decoration: line-through;
+        }
+
+        .sale-badge {
+            background: var(--gold-dark);
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .order-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card-hover);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .quantity-input-group {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--gold-primary);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .qty-btn {
+            background: var(--gold-primary);
+            color: var(--bg-dark);
+            border: none;
+            width: 28px;
+            height: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .qty-value {
+            width: 35px;
+            text-align: center;
+            background: transparent;
+            color: var(--text-main);
+            border: none;
+            font-weight: bold;
+        }
+
+        .add-to-cart-btn {
+            background: var(--gold-primary);
+            color: var(--bg-dark);
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .add-to-cart-btn:hover {
+            background: var(--gold-light);
+        }
+
+        .details-btn {
+            background: transparent;
+            color: var(--gold-light);
+            border: 1px solid var(--border-gold);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .details-btn:hover {
+            border-color: var(--gold-primary);
+            background: rgba(212,175,55,0.05);
+        }
+
+        /* نوافذ تفاصيل المنتج المنبثقة */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--gold-primary);
+            border-radius: 20px;
+            max-width: 650px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            background: transparent;
+            border: none;
+            color: var(--gold-light);
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        .modal-img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-gold);
+        }
+
+        .modal-title {
+            font-family: 'Amiri', serif;
+            font-size: 2.2rem;
+            color: var(--gold-light);
+            margin-bottom: 5px;
+        }
+
+        .modal-origin {
+            color: var(--gold-primary);
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-body p {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .modal-benefits-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .modal-benefits-list li {
+            color: var(--text-main);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+
+        .modal-benefits-list li i {
+            color: var(--gold-primary);
+        }
+
+        /* سلة الطلبات */
+        .checkout-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 800px;
+            margin: 40px auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+            font-size: 1rem;
+        }
+
+        .cart-total {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--gold-light);
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--gold-light);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-gold);
+            color: white;
+            border-radius: 8px;
+        }
+
+        /* زر إرسال الطلب بتصميم الموقع (ذهبي وأسود) */
+        .submit-order-btn {
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            color: var(--bg-dark);
+            border: none;
+            padding: 14px;
+            border-radius: 30px;
+            width: 100%;
+            font-weight: 800;
+            font-size: 1.15rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .submit-order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+            background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
+        }
+
+        /* قصة العلامة التجارية */
+        .story-section {
+            background: linear-gradient(135deg, #141414, #0d0d0d);
+            border: 1px solid var(--border-gold);
+            padding: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-radius: 16px;
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .story-title {
+            font-family: 'Amiri', serif;
+            font-size: 2.5rem;
+            color: var(--gold-light);
+            margin-bottom: 10px;
+        }
+
+        .story-subtitle {
+            font-size: 1.1rem;
+            color: var(--gold-primary);
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        .story-text-content h3 {
+            font-family: 'Amiri', serif;
+            font-size: 1.7rem;
+            color: var(--gold-light);
+            margin: 25px 0 10px;
+            border-bottom: 1px dashed var(--border-gold);
+            padding-bottom: 5px;
+        }
+
+        .story-text-content p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.9;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .story-img-box {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-gold);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 100%;
+        }
+
+        .story-img-box img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .highlight-quote {
+            background: rgba(212, 175, 55, 0.05);
+            border-right: 4px solid var(--gold-primary);
+            padding: 18px;
+            margin: 20px 0;
+            border-radius: 6px;
+            font-family: 'Amiri', serif;
+            font-size: 1.2rem;
+            color: var(--gold-light);
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        /* الفوتر */
+        footer {
+            border-top: 1px solid var(--border-gold);
+            padding: 40px 6% 20px;
+            text-align: center;
+            background-color: #080808;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 992px) {
+            .story-grid { grid-template-columns: 1fr; }
+            nav ul { display: none; }
+            .hero-content-box h1 { font-size: 2.5rem; }
+            header { top: 36px; padding: 12px 4%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- رسالة الشكر والنجاح الصغيرة (Toast) -->
+    <div id="toast-notification">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toast-message">شكراً لطلبك! تم إرسال طلبك بنجاح وسنتمم الإجراءات فوراً 🍯</span>
+    </div>
+
+    <!-- نافذة الدفع الفوري (تشبه WPAY) -->
+    <div class="wpay-modal-overlay" id="wpayModal">
+        <div class="wpay-modal-content">
+            <button class="wpay-close" onclick="closeWpayModal()">&times;</button>
+            <div class="wpay-logo">WPAY</div>
+            <div class="wpay-subtitle">Payment to عسل المحراب</div>
+            
+            <div class="wpay-details-box">
+                <div class="wpay-row">
+                    <span>العميل:</span>
+                    <strong id="modal-cust-name">-</strong>
+                </div>
+                <div class="wpay-row">
+                    <span>طريقة الدفع:</span>
+                    <strong>Whish Money</strong>
+                </div>
+                <div class="wpay-row wpay-total-row">
+                    <span>المبلغ الإجمالي:</span>
+                    <span id="modal-total-amount">0$</span>
+                </div>
+            </div>
+
+            <div class="wpay-number-box">
+                <span>رقم تحويل الـ Whish المعتمد:</span>
+                <strong>71001273</strong>
+            </div>
+
+            <!-- الملاحظة المضافة لإرسال السكرين شوت والاسم عبر الواتساب -->
+            <div class="wpay-whatsapp-note">
+                <i class="fa-brands fa-whatsapp" style="font-size: 1.1rem; color: #25d366; margin-left: 5px;"></i>
+                <strong>ملاحظة هامة:</strong> بعد إتمام التحويل، يرجى إرسال صورة إيصال التحويل (Screenshot) مع اسمك الكريم (نفس الاسم المُدخل بالأعلى) عبر الواتساب على الرقم: <strong>71001273</strong> ليتم تأكيد طلبك وتجهيزه فوراً.
+            </div>
+
+            <button class="wpay-confirm-btn" onclick="confirmWpayPayment()">تأكيد وإتمام الدفع</button>
+        </div>
+    </div>
+
+    <!-- تأثير نقط العسل بالخلفية -->
+    <div class="honey-drops-bg" id="honeyDrops"></div>
+
+    <!-- شاشة الدخول الفخمة مع خلفية الفيديو -->
+    <div id="splash-screen">
+        <video id="splashVideo" src="image/splash_video.mp4" autoplay muted playsinline class="splash-video-bg"></video>
+        <div class="splash-overlay"></div>
+        <div class="splash-content">
+            <div class="splash-logo">عسل المحراب</div>
+            <div class="splash-sub">AL MEHRAB HONEY</div>
+        </div>
+    </div>
+
+    <!-- الشريط الإعلاني المتحرك الأعلى -->
+    <div class="top-announcement-bar">
+        <div class="marquee-track">
+            <div class="marquee-item">عسل بلدي صافي ١٠٠٪؜ من مناحل المحراب <span class="marquee-dot"></span></div>
+            <div class="marquee-item">عسل نقي يعبق بعبق الزهور والصمود من ارض جنوب لبنان <span class="marquee-dot"></span></div>
+            <div class="marquee-item">توصيل سريع و امن لكافة مناطق لبنان <span class="marquee-dot"></span></div>
+
+            <div class="marquee-item">عسل بلدي صافي ١٠٠٪؜ من مناحل المحراب <span class="marquee-dot"></span></div>
+            <div class="marquee-item">عسل نقي يعبق بعبق الزهور والصمود من ارض جنوب لبنان <span class="marquee-dot"></span></div>
+            <div class="marquee-item">توصيل سريع و امن لكافة مناطق لبنان <span class="marquee-dot"></span></div>
+        </div>
+    </div>
+
+    <!-- شريط التنقل العلوي الفخم -->
+    <header>
+        <a href="#home" class="brand-logo">عسل المحراب</a>
+        <nav>
+            <ul>
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#products">أصناف العسل</a></li>
+                <li><a href="#checkout">سلة الطلبات</a></li>
+                <li><a href="#story">قصتنا</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- الواجهة الرئيسية مع خلفية الفيديو الكاملة -->
+    <section id="home" class="hero-video-bg">
+        <video src="image/honey_video.mp4" autoplay loop muted playsinline class="bg-video-element"></video>
+        <div class="video-overlay"></div>
+
+        <div class="hero-content-box">
+            <h1>حلاوة الطبيعة الصافية بين يديك</h1>
+            <p>مستخلص ببركة وعزيمة من أطهر بقاع أرض جنوب لبنان الأبي.. عسل نقي يعبق بعبق الزهور والصمود.</p>
+            
+            <div class="hero-actions">
+                <a href="#products" class="btn-main">تصفح الأصناف والعروض</a>
+                <a href="#story" class="btn-sec">اقرأ قصتنا</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- أصناف العسل والعروض -->
+    <section id="products" class="products-video-bg">
+        <video src="image/products_bg.mp4" autoplay loop muted playsinline class="products-bg-video"></video>
+        <div class="products-overlay"></div>
+
+        <div class="products-content-wrapper">
+            <div class="section-header">
+                <h2>أصناف عسل المحراب الفاخرة</h2>
+                <p style="color:var(--text-muted);">اضغط على أي صنف لمعرفة كافة التفاصيل والفوائد الصحية | متوفر مفرق وجملة (لدينا حد أدنى 6 كليات لطلبات الجملة)</p>
+            </div>
+
+            <div class="pricing-mode-tabs">
+                <div class="mode-tab active" onclick="setPricingMode('retail')">أسعار المفرق</div>
+                <div class="mode-tab" onclick="setPricingMode('wholesale')">أسعار الجملة (6 كليات فما فوق)</div>
+            </div>
+
+            <div class="products-grid">
+                <!-- عسل صيفي -->
+                <div class="product-card">
+                    <img src="image/summer_honey.jpg" alt="العسل الصيفي البلدي" class="product-img" onclick="openModal('summer')">
+                    <div class="product-card-body">
+                        <div>
+                            <h3 onclick="openModal('summer')">العسل الصيفي البلدي</h3>
+                            <p>مستخلص من زهور وبراري جنوب لبنان المتنوعة، يتميز بقوامه الغني ونكهته العطرية الفريدة.</p>
+                            <div class="price-box">
+                                <span class="current-price" id="price-summer">25$</span>
+                                <span class="old-price" id="old-price-summer">30$</span>
+                                <span class="sale-badge">عرض خاص</span>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="details-btn" onclick="openModal('summer')"><i class="fa-solid fa-circle-info"></i> عرض التفاصيل والفوائد الكاملة</button>
+                            <div class="order-box">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 0.85rem; color:var(--gold-light);">الكمية:</span>
+                                    <div class="quantity-input-group">
+                                        <button class="qty-btn" onclick="changeQty('summer', -1)">-</button>
+                                        <input type="text" id="qty-summer" class="qty-value" value="1" readonly>
+                                        <button class="qty-btn" onclick="changeQty('summer', 1)">+</button>
+                                    </div>
+                                </div>
+                                <button class="add-to-cart-btn" onclick="addToCart('العسل الصيفي البلدي', 25, 'summer')">إضافة للسلة</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- عسل سنديان -->
+                <div class="product-card">
+                    <img src="image/oak_honey.jpg" alt="عسل السنديان الملكي" class="product-img" onclick="openModal('oak')">
+                    <div class="product-card-body">
+                        <div>
+                            <h3 onclick="openModal('oak')">عسل السنديان الملكي</h3>
+                            <p>عسل غابي فريد مستخلص من أشجار السنديان العريقة في أحضان الطبيعة الخلابة.</p>
+                            <div class="price-box">
+                                <span class="current-price" id="price-oak">35$</span>
+                                <span class="old-price" id="old-price-oak">40$</span>
+                                <span class="sale-badge">عرض خاص</span>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="details-btn" onclick="openModal('oak')"><i class="fa-solid fa-circle-info"></i> عرض التفاصيل والفوائد الكاملة</button>
+                            <div class="order-box">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 0.85rem; color:var(--gold-light);">الكمية:</span>
+                                    <div class="quantity-input-group">
+                                        <button class="qty-btn" onclick="changeQty('oak', -1)">-</button>
+                                        <input type="text" id="qty-oak" class="qty-value" value="1" readonly>
+                                        <button class="qty-btn" onclick="changeQty('oak', 1)">+</button>
+                                    </div>
+                                </div>
+                                <button class="add-to-cart-btn" onclick="addToCart('عسل السنديان الملكي', 35, 'oak')">إضافة للسلة</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- عسل بشهده -->
+                <div class="product-card">
+                    <img src="image/comb_honey.jpg" alt="عسل بشهده الطبيعي" class="product-img" onclick="openModal('comb')">
+                    <div class="product-card-body">
+                        <div>
+                            <h3 onclick="openModal('comb')">عسل بشهده الطبيعي</h3>
+                            <p>قرص الشمع الطبيعي الصافي من مناحل الجنوب، غني بغبار الطلع والعكبر الأصلي.</p>
+                            <div class="price-box">
+                                <span class="current-price" id="price-comb">30$</span>
+                                <span class="old-price" id="old-price-comb">35$</span>
+                                <span class="sale-badge">عرض خاص</span>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="details-btn" onclick="openModal('comb')"><i class="fa-solid fa-circle-info"></i> عرض التفاصيل والفوائد الكاملة</button>
+                            <div class="order-box">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 0.85rem; color:var(--gold-light);">الكمية:</span>
+                                    <div class="quantity-input-group">
+                                        <button class="qty-btn" onclick="changeQty('comb', -1)">-</button>
+                                        <input type="text" id="qty-comb" class="qty-value" value="1" readonly>
+                                        <button class="qty-btn" onclick="changeQty('comb', 1)">+</button>
+                                    </div>
+                                </div>
+                                <button class="add-to-cart-btn" onclick="addToCart('عسل بشهده الطبيعي', 30, 'comb')">إضافة للسلة</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- نافذة تفاصيل العسل الصيفي -->
+    <div class="modal-overlay" id="modal-summer">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('summer')">&times;</button>
+            <img src="image/summer_honey.jpg" alt="العسل الصيفي" class="modal-img">
+            <h2 class="modal-title">العسل الصيفي البلدي</h2>
+            <div class="modal-origin"><i class="fa-solid fa-location-dot"></i> بلد المنشأ: من أراضي وبراري جنوب لبنان الأبي</div>
+            <div class="modal-body">
+                <p>مستخلص بعناية فائقة من رحيق زهور وبراعم الصيف المتنوعة في قرى ووديان الجنوب. يتميز بقوامه العنبرّي الغني ونكهته العطرية الساحرة التي تمنح طاقة حيوية متكاملة للجسم.</p>
+                <h4 style="color:var(--gold-light); margin-top:15px; margin-bottom:10px;">الفوائد الصحية الكاملة:</h4>
+                <ul class="modal-benefits-list">
+                    <li><i class="fa-solid fa-check"></i> مقوي عام للجهاز المناعي ومنشط فعّال للدورة الدموية.</li>
+                    <li><i class="fa-solid fa-check"></i> غني جداً بمضادات الأكسدة لمحاربة الجذور الحرة وحماية الخلايا.</li>
+                    <li><i class="fa-solid fa-check"></i> مهدئ طبيعي للأعصاب ومحسن لجودة النوم والتخلص من التوتر.</li>
+                    <li><i class="fa-solid fa-check"></i> مفيد جداً لصحة الجهاز الهضمي، وتنقية البشرة وإضفاء النضارة عليها.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل عسل السنديان -->
+    <div class="modal-overlay" id="modal-oak">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('oak')">&times;</button>
+            <img src="image/oak_honey.jpg" alt="عسل السنديان" class="modal-img">
+            <h2 class="modal-title">عسل السنديان الملكي</h2>
+            <div class="modal-origin"><i class="fa-solid fa-location-dot"></i> بلد المنشأ: من أعرق غابات ومناطق السنديان في لبنان</div>
+            <div class="modal-body">
+                <p>عسل غابي استثنائي فريد من نوعه، يتميز بلونه الداكن الملكي وقوامه الكثيف، مستخلص من أشجار السنديان العريقة في أحضان الطبيعة الجبلية.</p>
+                <h4 style="color:var(--gold-light); margin-top:15px; margin-bottom:10px;">الفوائد الصحية الكاملة:</h4>
+                <ul class="modal-benefits-list">
+                    <li><i class="fa-solid fa-check"></i> غني جداً بالمعادن الحديدية، المنجنيز، ومضادات البكتيريا الطبيعية.</li>
+                    <li><i class="fa-solid fa-check"></i> ممتاز لدعم صحة الجهاز التنفسي، مقاومة السعال، وتطهير الحلق.</li>
+                    <li><i class="fa-solid fa-check"></i> يساعد في تقوية العظام والمفاصل بفضل محتواه المعدني الغني.</li>
+                    <li><i class="fa-solid fa-check"></i> يعزز الطاقة البدنية والقدرة الرياضية بشكل طبيعي وآمن.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل عسل بشهده -->
+    <div class="modal-overlay" id="modal-comb">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('comb')">&times;</button>
+            <img src="image/comb_honey.jpg" alt="عسل بشهده" class="modal-img">
+            <h2 class="modal-title">عسل بشهده الطبيعي</h2>
+            <div class="modal-origin"><i class="fa-solid fa-location-dot"></i> بلد المنشأ: من خلايا مناحل جنوب لبنان الصامدة</div>
+            <div class="modal-body">
+                <p>قرص الشمع الطبيعي الصافي تماماً كما بناه النحل، لم يمرّ بأي عمليات تصفية صناعية، ليقدم أعلى قيمة غذائية أصلية مباشرة من الخلية إلى مائدتكم.</p>
+                <h4 style="color:var(--gold-light); margin-top:15px; margin-bottom:10px;">الفوائد الصحية الكاملة:</h4>
+                <ul class="modal-benefits-list">
+                    <li><i class="fa-solid fa-check"></i> غني بغبار الطلع، العكبر (البروبوليس)، وشمع النحل المفيد لصحة اللثة والأسنان.</li>
+                    <li><i class="fa-solid fa-check"></i> يعزز صحة الجهاز المناعي ومقاومة نزلات البرد والالتهابات الموسمية.</li>
+                    <li><i class="fa-solid fa-check"></i> مصدر طبيعي متكامل للطاقة، الفيتامينات، والإنزيمات الحيوية النشطة.</li>
+                    <li><i class="fa-solid fa-check"></i> طعم أصيل وتجربة تذوق استثنائية تعبق بعبير الطبيعة الجنوبية.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- سلة الطلبات والدفع -->
+    <section id="checkout" class="section-container">
+        <div class="checkout-section">
+            <h2 style="font-family:'Amiri'; color:var(--gold-light); text-align:center; margin-bottom:25px;">سلة الطلبات وإتمام الحجز</h2>
+            
+            <div id="cart-items-container" style="margin-bottom: 20px;">
+                <p style="color:var(--text-muted); text-align:center;">السلة فارغة حالياً. قم بإضافة المنتجات من الأعلى.</p>
+            </div>
+
+            <div class="cart-total" id="cart-total-display">المجموع الكلي: 0$</div>
+
+            <div class="form-group">
+                <label>الاسم الكريم:</label>
+                <input type="text" id="cust-name" placeholder="أدخل اسمك الكامل">
+            </div>
+            <div class="form-group">
+                <label>رقم الهاتف:</label>
+                <input type="text" id="cust-phone" placeholder="مثال: 71001273">
+            </div>
+            <div class="form-group">
+                <label>العنوان / المنطقة:</label>
+                <input type="text" id="cust-address" placeholder="المنطقة، القرية، أو المدينة">
+            </div>
+            
+            <div class="form-group">
+                <label>طريقة الدفع:</label>
+                <select id="payment-method">
+                    <option value="الدفع عند الاستلام (Cash)">الدفع عند الاستلام (Cash)</option>
+                    <option value="تحويل عبر Whish Money">الدفع الفوري عبر تطبيق Whish Money</option>
+                </select>
+            </div>
+
+            <!-- زر إرسال الطلب -->
+            <button class="submit-order-btn" onclick="handleOrderSubmission()">
+                إرسال الطلب
+            </button>
+        </div>
+    </section>
+
+    <!-- قصة العلامة التجارية -->
+    <section id="story" class="section-container">
+        <div class="story-section">
+            <div class="story-grid">
+                <div class="story-text-content">
+                    <h2 class="story-title">حكاية نحبّها..</h2>
+                    <div class="story-subtitle">من عيترون الأبية إلى شغف العسل والخلود (قصة عسل المحراب)</div>
+
+                    <p>في بقعة طاهرة من أرض الجنوب اللبناني الأبي، وتحديداً في قرية عيترون الحدودية، بدأت الحكاية عام 2011. هناك، حيث تقابل الأرض السماء وتعانق التراب طمأنينة المقاومين، انطلق أبو محمد في رحلته العطرة مع عالم النحل الساحر. بدأ يربّي النحل ويعتني به وبأدق تفاصيله، كمن يزرع غرساً من ربيع روحه، فصار النحل رفيق أيامه وشغف قلبه.</p>
+                    
+                    <h3>شعلة تنتقل.. و"ملك النحل" يولد</h3>
+                    <p>كبر الابن علي وسط هذا العبق الطبيعي، وتشرب حب المصلحة أباً عن جد حتى فاقت محبته لها كل حدود. لم يكن علي مجرد مهتم بتفاصيل النحل، بل صار مهووساً بهذا العالم الساحر وبأسرار الطبيعة والعسل. شارك علي بحماسة لافتة في العديد من المعارض لإيصال هذا النتاج الطيب، ولعل أبرزها معرض سيد الشهداء (سوق أرضي)، حيث ترك بصمته الخاصة. سنةً بعد سنة، كان علي يتطور في هذه المهنة، ينقل خلايا النحل من أقصى جنوب لبنان إلى شماله، يسهر عليها، يتعب في رعايتها، ولا يملّ العطاء. ومع قسوة الظروف، حين اندلعت حرب الإسناد، خسر المنحل الأول.. لكن علي لم يعبأ بالخسارة، بل عاد ليجدّد ويبني من جديد. وعندما تعذر الوصول إلى المنحل الثاني، لم يستسلم، بل عاد أدراجه ليؤسس منحلاً جديداً، إلى أن ختم مسيرته العطرة بارتقائه شهيداً في حرب أولي البأس.</p>
+                    
+                    <div class="highlight-quote">
+                        الشهيد علي خليل حجازي (محراب).. أو كما لقبوه عن استحقاق: "ملك النحل".
+                    </div>
+
+                    <p>لقد رحل علي، فبكاه رفاقه وأحبابه، وفتقده النحل الذي اعتاد دفء يديه، واشتاقت تراب الجنوب لخطواته. لكن سيرته العطرة ظلّت ترفرف فوق خلايا النحل كنسيم ربيعي لا يغيب.</p>
+
+                    <h3>مسيرة لا تموت.. من العصف المأكول إلى أريج الصمود</h3>
+                    <p>رغم مرارة الفقد وعمق الأسى، قرر أبو محمد، الأب الصابر المحتسب، ألا يطفئ تلك الشعلة. عاد إلى مصلحة النحل ليحييها ويكبرها، فجَدّد كل خلايا النحل التي فقدها في الحرب، وضاعف جهده ورعايته وكأن نجله علي يشدّ على أزرِه من بعيد.</p>
+                    <p>لكن المحن تأبى إلا أن تختبر العزائم؛ فمع اندلاع حرب العصف المأكول، اضطر أبو محمد إلى النزوح، تاركاً خلفه نحلاته في الجنوب الحبيب. ولم يمنعه النزوح عن شغفه، إذ بادر فوراً إلى جلب خلايا جديدة حيث نزح، واهتم بها ليبني المنحل من جديد وتستمر الحياة.</p>
+
+                    <h3>لطف إلهي وطعم العسل الأصيل</h3>
+                    <p>ومن جميل لطف الله وعنايته، ما إن وضعت الحرب أوزارها وأُعلنت الهدنة، حتى سارع أبو محمد بالعودة إلى الجنوب. هناك، وجد أن نصف النحل قد قضى، بينما بقيت النصف الأخرى حيةً تنبض بالصمود! وحينها، لم يسعَ قلبه إلا أن يحمد الله ويشكره حمداً كثيراً.</p>
+                    <p>عاد أبو محمد بكل عزيمة ليعمل في منحله، وينتج أطيب عسل صيفي وأشهى عسل بالشهْد، وكأن كل قطرة عسل هي حكاية صبر ووفاء لدم الشهيد.</p>
+                    <p>وما زال أبو محمد حتى يومنا هذا، ينهمك في عمله بين النحل كل يوم، بكل حبّ، رضا، ويقين بأن الحياة تُزهر لمن يحب الأرض ويخلص لها.</p>
+
+                    <div class="highlight-quote">
+                        هكذا يبقى النحل في عيترون شاهدًا على حكاية عائلةٍ لم تعرف الهزيمة. فعسلهم ليس مجرد دواء أو طعام، بل هو عصارة دمع صبر وعزيمة.. شهيق من روح "ملك النحل" الذي زرع النور في الخلايا، وفاءً أرضٍ لا تطيق إلا أن تنجب الأبطال وتطعم المحبين أطيب الثمار.
+                    </div>
+                </div>
+
+                <div>
+                    <div class="story-img-box">
+                        <img src="image/image_2.png" alt="شعار وعلامة عسل المحراب">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer>
+        <p>جميع الحقوق محفوظة ©️ عسل المحراب 2026</p>
+    </footer>
+
+    <script>
+        // تأثير نقط العسل بالخلفية
+        const dropsContainer = document.getElementById('honeyDrops');
+        for(let i=0; i<15; i++) {
+            const drop = document.createElement('div');
+            drop.classList.add('drop');
+            drop.style.left = `${Math.random() * 100}%`;
+            drop.style.top = `-${Math.random() * 20}px`;
+            const size = Math.random() * 8 + 4;
+            drop.style.width = `${size}px`;
+            drop.style.height = `${size}px`;
+            drop.style.animationDuration = `${Math.random() * 8 + 6}s`;
+            drop.style.animationDelay = `${Math.random() * 5}s`;
+            dropsContainer.appendChild(drop);
+        }
+
+        // إخفاء شاشة التحميل فور انتهاء تشغيل الفيديو تماماً
+        const splashVideo = document.getElementById('splashVideo');
+        splashVideo.addEventListener('ended', function() {
+            const splash = document.getElementById('splash-screen');
+            splash.style.opacity = '0';
+            splash.style.visibility = 'hidden';
+        });
+
+        // فتح وإغلاق النوافذ المنبثقة للتفاصيل
+        function openModal(type) {
+            document.getElementById(`modal-${type}`).classList.add('active');
+        }
+        function closeModal(type) {
+            document.getElementById(`modal-${type}`).classList.remove('active');
+        }
+
+        // إظهار رسالة الشكر والنجاح الصغيرة
+        function showToast(message) {
+            const toast = document.getElementById('toast-notification');
+            const msgSpan = document.getElementById('toast-message');
+            msgSpan.innerText = message;
+            
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        let cart = [];
+        let currentMode = 'retail';
+
+        function setPricingMode(mode) {
+            currentMode = mode;
+            const tabs = document.querySelectorAll('.mode-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if(mode === 'retail') {
+                document.getElementById('price-summer').innerText = '25$';
+                document.getElementById('old-price-summer').style.display = 'inline';
+                document.getElementById('price-oak').innerText = '35$';
+                document.getElementById('old-price-oak').style.display = 'inline';
+                document.getElementById('price-comb').innerText = '30$';
+                document.getElementById('old-price-comb').style.display = 'inline';
+            } else {
+                document.getElementById('price-summer').innerText = '20$ (جملة)';
+                document.getElementById('old-price-summer').style.display = 'none';
+                document.getElementById('price-oak').innerText = '30$ (جملة)';
+                document.getElementById('old-price-oak').style.display = 'none';
+                document.getElementById('price-comb').innerText = '25$ (جملة)';
+                document.getElementById('old-price-comb').style.display = 'none';
+            }
+        }
+
+        function changeQty(key, delta) {
+            const input = document.getElementById(`qty-${key}`);
+            let val = parseInt(input.value) + delta;
+            if(val < 1) val = 1;
+            input.value = val;
+        }
+
+        function addToCart(productName, price, key) {
+            const qty = parseInt(document.getElementById(`qty-${key}`).value);
+
+            if(currentMode === 'wholesale' && qty < 6) {
+                showToast('عذراً، طلبات الجملة مخصصة لـ 6 كليات أو أكثر!');
+                return;
+            }
+
+            let finalPrice = price;
+            if(currentMode === 'wholesale') {
+                if(key === 'summer') finalPrice = 20;
+                if(key === 'oak') finalPrice = 30;
+                if(key === 'comb') finalPrice = 25;
+            }
+
+            const existing = cart.find(i => i.name === productName && i.mode === currentMode);
+            if(existing) {
+                existing.qty += qty;
+            } else {
+                cart.push({ name: productName, price: finalPrice, qty: qty, mode: currentMode === 'wholesale' ? 'جملة' : 'مفرق' });
+            }
+            updateCartDisplay();
+            showToast(`تمت إضافة ${qty} من ${productName} بنجاح!`);
+        }
+
+        function updateCartDisplay() {
+            const container = document.getElementById('cart-items-container');
+            const totalDisplay = document.getElementById('cart-total-display');
+
+            if(cart.length === 0) {
+                container.innerHTML = `<p style="color:var(--text-muted); text-align:center;">السلة فارغة حالياً. قم بإضافة المنتجات من الأعلى.</p>`;
+                totalDisplay.innerText = `المجموع الكلي: 0$`;
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                let itemTotal = item.price * item.qty;
+                total += itemTotal;
+                html += `
+                    <div class="cart-item">
+                        <div><strong>${item.name}</strong> (${item.mode}) - الكمية: ${item.qty}</div>
+                        <div>
+                            <span>${itemTotal}$</span>
+                            <button onclick="removeFromCart(${index})" style="background:none; border:none; color:#ff4757; cursor:pointer; margin-right:15px;"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            totalDisplay.innerText = `المجموع الكلي: ${total}$`;
+        }
+
+        fnCalcTotal = function() {
+            let total = 0;
+            cart.forEach(item => { total += item.price * item.qty; });
+            return total;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartDisplay();
+        }
+
+        // عند الضغط على إرسال الطلب
+        function handleOrderSubmission() {
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+            const payment = document.getElementById('payment-method').value;
+
+            if(!name || !phone || !address) {
+                showToast('الرجاء إدخال الاسم، رقم الهاتف، والعنوان.');
+                return;
+            }
+
+            if(cart.length === 0) {
+                showToast('سلة الطلبات فارغة، يرجى اختيار منتج واحد.');
+                return;
+            }
+
+            // إذا اختار الدفع عبر الويش، نظهر له شاشة الدفع المشابهة لـ WPAY
+            if(payment.includes('Whish')) {
+                let total = fnCalcTotal();
+                document.getElementById('modal-cust-name').innerText = name;
+                document.getElementById('modal-total-amount').innerText = total + '$';
+                document.getElementById('wpayModal').classList.add('active');
+            } else {
+                // إذا كاش، نرسل الطلب مباشرة للتليجرام
+                sendOrderToTelegram();
+            }
+        }
+
+        function closeWpayModal() {
+            document.getElementById('wpayModal').classList.remove('active');
+        }
+
+        // عند تأكيد الدفع من نافذة الويش
+        function confirmWpayPayment() {
+            closeWpayModal();
+            sendOrderToTelegram();
+        }
+
+        // دالة إرسال الطلب عبر تليجرام للخلفية
+        function sendOrderToTelegram() {
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+            const payment = document.getElementById('payment-method').value;
+
+            let msg = `🚨 طلب جديد من موقع عسل المحراب 🍯:\n\n`;
+            msg += `👤 اسم الزبون: ${name}\n`;
+            msg += `📞 رقم الهاتف: ${phone}\n`;
+            msg += `📍 العنوان: ${address}\n`;
+            msg += `💳 طريقة الدفع: ${payment}\n\n`;
+            msg += `🛒 المنتجات المطلوبة:\n`;
+
+            let total = 0;
+            cart.forEach(item => {
+                let itemTotal = item.price * item.qty;
+                total += itemTotal;
+                msg += `- ${item.name} (${item.mode}) | الكمية: ${item.qty} | السعر: ${itemTotal}$\n`;
+            });
+            msg += `\n💰 المجموع الإجمالي: ${total}$`;
+
+            const botToken = "9138780802:AAH9nxpfLqqoEEBN0RfcC4gAHc6jjOCVzqw"; 
+            const chatId = "6032772110";
+
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}`;
+
+            fetch(url)
+                .then(response => {
+                    if(response.ok) {
+                        showToast('شكراً لطلبك! تم إرسال طلبك بنجاح وسنتمم الإجراءات فوراً 🍯');
+                        cart = [];
+                        updateCartDisplay();
+                        document.getElementById('cust-name').value = '';
+                        document.getElementById('cust-phone').value = '';
+                        document.getElementById('cust-address').value = '';
+                    } else {
+                        showToast('حدث خطأ في الإرسال، يرجى المحاولة لاحقاً.');
+                    }
+                })
+                .catch(error => {
+                    showToast('تعذر الاتصال بالإنترنت.');
+                });
+        }
+    </script>
+</body>
+</html>
