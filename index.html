@@ -38,6 +38,11 @@
             position: relative;
         }
 
+        /* تعديل منع تقريب الشاشة (Zoom) المزعج عند النقر على خيارات الإدخال في الجوال */
+        input, textarea, select {
+            font-size: 16px !important;
+        }
+
         /* رسالة الشكر والنجاح الصغيرة (Toast) */
         #toast-notification {
             position: fixed;
@@ -268,8 +273,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            min-width: 100%;
-            min-height: 100%;
+            width: 100vw;
+            height: 100vh;
             object-fit: cover;
             z-index: 1;
         }
@@ -430,7 +435,7 @@
             width: 100%;
         }
 
-        /* الواجهة الرئيسية مع خلفية الفيديو الكاملة */
+        /* الواجهة الرئيسية مع خلفية الفيديو الكاملة تملأ شاشة الهاتف تماماً */
         .hero-video-bg {
             position: relative;
             width: 100%;
@@ -448,8 +453,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            min-width: 100%;
-            min-height: 100%;
+            width: 100vw;
+            height: 100vh;
             object-fit: cover;
             z-index: 1;
         }
