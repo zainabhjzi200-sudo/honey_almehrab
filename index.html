@@ -448,7 +448,7 @@
             z-index: 2;
         }
 
-        .bg-video-element, .products-bg-video {
+        .bg-video-element {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -535,21 +535,11 @@
             color: var(--gold-light);
         }
 
-        /* قسم أصناف العسل بخلفية فيديو كاملة */
-        .products-video-bg {
+        /* قسم أصناف العسل (بدون فيديو - مع نقط العسل بالخلفية) */
+        .products-section {
             position: relative;
             padding: 120px 6%;
             overflow: hidden;
-            z-index: 2;
-        }
-
-        .products-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(13, 13, 13, 0.85);
             z-index: 2;
         }
 
@@ -1031,7 +1021,7 @@
         <span id="toast-message">شكراً لطلبك! تم إرسال طلبك بنجاح وسنتمم الإجراءات فوراً 🍯</span>
     </div>
 
-    <!-- نافذة الدفع الفوري (تشبه WPAY) -->
+    <!-- نافذة الدفع الفوري المنبثقة (تشبه WPAY) -->
     <div class="wpay-modal-overlay" id="wpayModal">
         <div class="wpay-modal-content">
             <button class="wpay-close" onclick="closeWpayModal()">&times;</button>
@@ -1084,13 +1074,13 @@
     <!-- الشريط الإعلاني المتحرك الأعلى -->
     <div class="top-announcement-bar">
         <div class="marquee-track">
-            <div class="marquee-item">عسل بلدي صافي ١٠٠٪؜ من مناحل المحراب <span class="marquee-dot"></span></div>
-            <div class="marquee-item">عسل نقي يعبق بعبق الزهور والصمود من ارض جنوب لبنان <span class="marquee-dot"></span></div>
-            <div class="marquee-item">توصيل سريع و امن لكافة مناطق لبنان <span class="marquee-dot"></span></div>
+            <div class="marquee-item">عسل بلدي صافي ١٠٠٪؜ من مناحل المحراب </div>
+            <div class="marquee-item">عسل نقي يعبق بعبق الزهور والصمود من ارض جنوب لبنان </div>
+            <div class="marquee-item">توصيل سريع و امن لكافة مناطق لبنان </div>
 
-            <div class="marquee-item">عسل بلدي صافي ١٠٠٪؜ من مناحل المحراب <span class="marquee-dot"></span></div>
-            <div class="marquee-item">عسل نقي يعبق بعبق الزهور والصمود من ارض جنوب لبنان <span class="marquee-dot"></span></div>
-            <div class="marquee-item">توصيل سريع و امن لكافة مناطق لبنان <span class="marquee-dot"></span></div>
+            <div class="marquee-item">عسل بلدي صافي ١٠٠٪؜ من مناحل المحراب </div>
+            <div class="marquee-item">عسل نقي يعبق بعبق الزهور والصمود من ارض جنوب لبنان </div>
+            <div class="marquee-item">توصيل سريع و امن لكافة مناطق لبنان </div>
         </div>
     </div>
 
@@ -1124,10 +1114,7 @@
     </section>
 
     <!-- أصناف العسل والعروض -->
-    <section id="products" class="products-video-bg">
-        <video src="image/products_bg.mp4" autoplay loop muted playsinline class="products-bg-video"></video>
-        <div class="products-overlay"></div>
-
+    <section id="products" class="products-section">
         <div class="products-content-wrapper">
             <div class="section-header">
                 <h2>أصناف عسل المحراب الفاخرة</h2>
